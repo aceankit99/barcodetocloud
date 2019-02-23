@@ -1,0 +1,104 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .layout-footer{
+                position: unset;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">#{createApp.editApps.id==null?'New' :'Edit'} Apps</ui:define>
+
+    <ui:define name="viewname">#{createApp.editApps.id==null?'New' :'Edit'} Apps</ui:define>
+
+    <ui:define name="content">
+        <div style="min-height: calc(100vh - 235px);">
+
+            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+
+            <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false" style="width:100px;background: none;box-shadow: none">
+                <p:graphicImage value="images/ankitload.gif" style="width:100px" />
+            </p:dialog>
+            <h:form id="barcode">
+ 
+                <div class="ui-g">
+
+                    <div class="ui-g-12 ">
+                        <div class="card card-w-title">
+                           
+                                
+                                <p:messages>
+                                    <p:autoUpdate />
+                                </p:messages>  
+                             
+                            <h4 style="font-weight:500;margin-left: 50px">#{createApp.editApps.id==null?'New' :'Edit'} Apps</h4>
+                              
+                           
+                            <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;margin-left: 50px">
+
+                                   <p:outputLabel for="name" value="App Name:" />
+                                   <p:inputText id="name" value="#{createApp.editApps.appName}"  style="width:220px" required="true" requiredMessage="Please Enter App Name"  />
+                                  
+                                   
+                                   <p:outputLabel for="barcode" value="What would you like to Scan?"/>
+                                   <p:selectOneMenu id="barcode" value="#{createApp.editApps.scannedItem}"  style="width:200px">
+                                       
+                                       <f:selectItem itemLabel="Barcode" itemValue="Barcode" />
+                                   </p:selectOneMenu>
+                                   
+                                   <p:outputLabel for="use" value="What would you like to do with the Scanned Value?"/>
+                                   <p:selectOneMenu id="use" value="#{createApp.editApps.useOfBarcode}"  style="width:200px">
+                                       
+                                       <f:selectItem itemLabel="Send to other Platform" itemValue="OtherPlatform" />
+                                   </p:selectOneMenu>
+                                    
+                                   <p:outputLabel for="platform" value="Select Platform:"/>
+                                   <p:selectOneMenu id="platform" value="#{createApp.editApps.platform}"  style="width:200px">
+                                      
+                                       <f:selectItem itemLabel="Google Spreadsheet" itemValue="Google Spreadsheet" />
+                                   </p:selectOneMenu>
+                                   
+                                   <p:outputLabel for="account" value="Select Account"/>
+                                   <p:selectOneMenu id="account" value="#{createApp.editApps.email}"  style="width:200px" filter="true" filterMatchMode="startsWith">
+                                       <p:ajax event="change" update="file" listener="#{createApp.getFilesByFileName(createApp.editApps.email)}" />
+                                       <f:selectItems  value="#{createApp.accountsList}" var="accounts" itemLabel="#{accounts}" itemValue="#{accounts}" />
+                                   </p:selectOneMenu>
+                                   
+                                   <p:outputLabel for="file" value="Select File"/>
+                                   <p:selectOneMenu id="file" value="#{createApp.editApps.fileid}"  style="width:200px" filter="true" filterMatchMode="startsWith">
+                                       <p:ajax event="change" update="sheet" listener="#{createApp.getSheetsByFileName(createApp.editApps.fileid)}" />
+                                       <f:selectItems  value="#{createApp.usfile}" var="file" itemLabel="#{file.name}" itemValue="#{file.fileID}" />
+                                   </p:selectOneMenu>
+                                   
+                                   <p:outputLabel for="sheet" value="Select Sheet"/>
+                                   <p:selectOneMenu id="sheet" value="#{createApp.editApps.tabs}"  style="width:200px" filter="true" filterMatchMode="startsWith">
+                                       <f:selectItems  value="#{createApp.tabsList}" var="fil" itemLabel="#{fil}" itemValue="#{fil}" />
+                                   </p:selectOneMenu>
+      
+                                   <p:toolbar style="min-width: 225px;width: 40vw;background: transparent;border: none" >
+                                    <f:facet name="right">
+                                        <p:commandButton value="Back" immediate="true" ajax="false" action="#{createApp.backToList()}"  />
+                                    </f:facet>
+                                    <f:facet name="right">
+                                        <p:commandButton value="Save"  ajax="false" action="#{createApp.addUpdateCondition()}" />
+                                    </f:facet>
+                                 </p:toolbar>
+                                   
+                                </p:panelGrid>
+                           
+                        </div>
+                    </div>
+                </div>
+                
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>
+

@@ -1,0 +1,91 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            body .ui-growl { top:125px;}
+                 
+            .layout-footer{
+                position: relative;
+                bottom: -30px;
+            }
+        </style>
+        <meta http-equiv="Cache-Control" content="max-age=2592000"/>
+    </ui:define>
+
+    <ui:define name="title">Apps List</ui:define>
+
+    <ui:define name="viewname">Apps List</ui:define>
+
+    <ui:define name="content">
+        <div style="min-height: calc(100vh - 235px);">
+            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+
+            <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false" style="width:100px;background: none;box-shadow: none">
+                <p:graphicImage value="images/ankitload.gif" style="width:100px" />
+            </p:dialog>
+            <h:form id="mainForm">
+              
+                <div class="ui-g">
+
+                    <div class="ui-g-12">
+                        <div class="card card-w-title">
+                            <p:confirmDialog widgetVar="deletedialog" showEffect="fade" hideEffect="fade"  message="Are you sure you want to delete this app?" header="Confirmation" width="350px" style="font-size: 14px">  
+                                <p:commandButton type="submit" value="Yes"  styleClass="ui-confirmdialog-yes" icon="ui-icon-check" action="#{adminController.deleteApp()}" oncomplete="PF('deletedialog').hide()" update=":mainForm" />  
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" onclick="PF('deletedialog').hide()"  />  
+                            </p:confirmDialog>  
+                            <h1>Apps List</h1>
+                            <p:commandButton icon="ui-icon-contact fa fa-plus" action="#{adminController.newApp(a)}" value="Add Apps" rendered="#{appList.totalAppsListForUser()}"></p:commandButton>
+                            <p:dataTable reflow="true" id="userTable" var="apps" value="#{appList.appList}"  paginator="true" rows="30" tableStyle="table-layout:auto" style="margin-top:5px;" rowIndexVar="rowIndex">
+
+                                <p:column headerText="Sr. No." style="text-align: left" >
+                                    <h:outputText value="#{rowIndex+1}" />
+                                </p:column>
+                                
+                                <p:column headerText="App Name" style="text-align: left" >
+                                    <h:outputText value="#{apps.appName}" />
+                                </p:column>
+
+                                <p:column headerText="Scanned Item" style="text-align: left" >
+                                    <h:outputText value="#{apps.scannedItem}"/>
+                                </p:column>
+
+                                <p:column headerText="Send Barcode to" style="text-align: left" >
+                                    <h:outputText value="#{apps.useOfBarcode}"/>
+                                </p:column>
+                                
+                                <p:column headerText="Platform" style="text-align: left" >
+                                    <h:outputText value="#{apps.platform}"/>
+                                </p:column>
+                                
+                                <p:column headerText="File Name" style="text-align: left" >
+                                    <h:outputText value="#{apps.sheet}"/>
+                                </p:column>
+                                
+                                <p:column headerText="Sheet Name" style="text-align: left" >
+                                    <h:outputText value="#{apps.tabs}"/>
+                                </p:column>
+
+                                <p:column  headerText="Option" >
+                                    
+                                    
+                                    <p:commandButton icon="ui-icon-pencil" action="#{adminController.editApps(apps)}"></p:commandButton> |                   
+                                     <p:commandButton oncomplete="PF('deletedialog').show()" icon="ui-icon-trash" process="@this" update="@form">  
+                                         <f:setPropertyActionListener value="#{apps}" target="#{webSession.apps}"/>
+                                     </p:commandButton>  
+                                    
+                                </p:column>
+                            </p:dataTable>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>
+

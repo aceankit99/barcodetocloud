@@ -1,0 +1,62 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+
+        </style>
+    </ui:define>
+
+    <ui:define name="title">Barcode</ui:define>
+
+    <ui:define name="viewname">Barcode</ui:define>
+
+    <ui:define name="content">
+        <div style="min-height: calc(100vh - 235px);">
+            <h:form id="barcode">
+
+                <div class="ui-g">
+
+                    <div class="ui-g-12">
+                        <div class="card card-w-title">
+                            <h4>Save Barcode</h4>
+                            <p:panelGrid columns="2" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
+                                   
+                                   <p:outputLabel for="file" value="Spreadsheet" />
+                                   <p:inputText id="file" value="#{barcode.uf.name}" size="60"   readonly="true" />
+
+                                    <p:outputLabel for="barcode" value="Barcode"/>
+                                    <p:inputText id="barcode"  size="60"  value="#{barcode.barCode}"  />
+                                    
+                                    <p:outputLabel for="Sheet" value="Sheet Name"/>
+                                    <p:inputText id="Sheet"  size="60"  value="#{barcode.sheetName}"  />
+                                    
+                                    <p:outputLabel for="row" value="Row"/>
+                                    <p:inputNumber id="row" size="60" value="#{barcode.rowNum}"  padControl="false"/>
+                                    
+                                    <p:outputLabel for="column" value="Column"/>
+                                    <p:inputText id="column" size="60" value="#{barcode.columnName}"  />
+
+                                    <p:toolbar  style="width:600px">
+                                        <f:facet name="left">
+                                            <p:commandButton id="btn2" immediate="true"  action="excelSheetsForAccounts.xhtml"  ajax="false"  value="Cancel"  />
+                                        </f:facet>
+                                        <f:facet name="right">
+                                            <p:commandButton id="btn"    value="Save" action="#{viewSupport.writeSpreadSheet(barcode.uf,barcode.barCode,barcode.rowNum,barcode.columnName,barcode.sheetName)}"  />
+                                        </f:facet>
+                                    </p:toolbar>
+                                </p:panelGrid>
+
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>
+

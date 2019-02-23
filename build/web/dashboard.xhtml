@@ -1,0 +1,88 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">Dashboard</ui:define>
+
+    <ui:define name="viewname">Dashboard</ui:define>
+
+    <ui:define name="head">
+        <f:metadata>
+            <f:viewParam name="code" value="#{viewSupport.parameterOne}" />
+            <f:viewAction action="#{viewSupport.profile()}"  />
+        </f:metadata>
+        <meta http-equiv="Cache-Control" content="max-age=2592000"/>
+        <style type="text/css">
+            .main-content {
+                padding: 0;
+            }
+                 .layout-footer{
+                     position: relative;
+                     bottom: -30px;   
+            }
+        </style>
+         <style type="text/css">
+            
+            body .ui-growl { top:125px;}
+            :disabled {
+  cursor: not-allowed !important;
+  pointer-events: all !important;
+
+}
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+        <div class="dashboard" style="min-height: calc(100vh - 235px);">
+            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+
+            <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false" style="width:100px;background: none;box-shadow: none">
+                <p:graphicImage value="images/ankitload.gif" style="width:100px" cache="true" />
+            </p:dialog>
+         
+            <h:form id="mainForm">                   
+                <div class="ui-g">
+                    <div class="ui-g-12">
+                        <div class="card card-w-title">
+                            <p:confirmDialog widgetVar="deletedialog" showEffect="fade" hideEffect="fade"  message="Are you sure you want to delete this account?" header="Confirmation" width="350px" style="font-size: 14px">  
+                                <p:commandButton type="submit" value="Yes"  styleClass="ui-confirmdialog-yes" icon="ui-icon-check" action="#{adminController.deleteUser()}" oncomplete="PF('deletedialog').hide()" update=":mainForm" />  
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" onclick="PF('deletedialog').hide()"  />  
+                            </p:confirmDialog>  
+                            <p:button  icon="fa fa-google-plus-official"  value="Add Google Accounts"  href="#{login.GoogleAuth()}"/><p:commandButton value="View Apps List" ajax="false" action="appList.xhtml"/>
+                            <br></br> <br></br>
+                            
+                            <p:dataTable var="accountslist" value="#{dashboard.usaccountslist}" reflow="true"
+                                         paginator="true" rows="10" tableStyle="table-layout:auto" >
+                                <f:facet name="header">
+                                    Added Accounts List
+                                </f:facet>
+
+                                <p:column headerText="Email" style="text-align: left"  sortBy="#{accountslist.emailAddress}">
+                                    <h:outputText value="#{accountslist.emailAddress}" />
+                                </p:column>
+
+                                <p:column headerText="Name" style="text-align: left" sortBy="#{accountslist.name}">
+                                    <h:outputText value="#{accountslist.name}" />
+                                </p:column>
+
+                                <p:column  headerText="Action" style="text-align: left" >
+                                    <!--<p:commandButton icon="ui-icon-pencil" action="#{adminController.getExcelSheetsByAccount(accountslist.emailAddress)}"></p:commandButton>-->                  
+                                    
+                                     <p:commandButton oncomplete="PF('deletedialog').show()" icon="ui-icon-trash" process="@this" update="@form"  disabled="#{dashboard.isAppsExistWithEmail(accountslist.emailAddress)}">  
+                                        <f:setPropertyActionListener value="#{accountslist}" target="#{webSession.users}"/>
+                                     </p:commandButton>  
+                                </p:column>
+
+                            </p:dataTable>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+        </div>
+         
+    </ui:define>
+
+</ui:composition>
+
+
+
+

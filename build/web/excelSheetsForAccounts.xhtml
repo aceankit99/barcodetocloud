@@ -1,0 +1,76 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">Dashboard</ui:define>
+
+    <ui:define name="viewname">Dashboard</ui:define>
+
+    <ui:define name="head">
+        
+       
+        <style type="text/css">
+            .main-content {
+                padding: 0;
+            }
+        </style>
+         <style type="text/css">
+            .butonImgae{
+                width: 220px;
+
+                background-image: url(images/google2.jpg);
+
+                background-repeat: no-repeat;
+
+                background-size: 24px;
+
+                background-position: 1px;
+
+                padding-left: 32px;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+        <div class="dashboard">
+         
+            <h:form id="mainForm">                   
+                <div class="ui-g">
+                    <div class="ui-g-12">
+                        <div class="card card-w-title">
+                            
+                           
+                            <br></br> <br></br>
+                            
+                            <p:dataTable var="car" value="#{dashboard.usfile}" reflow="true"
+                                         paginator="true" rows="10" tableStyle="table-layout:auto">
+                                <f:facet name="header">
+                                    Files
+                                </f:facet>
+
+                                <p:column headerText="ID" sortBy="#{car.id}">
+                                    <h:outputText value="#{car.id}" />
+                                </p:column>
+
+                                <p:column headerText="File Name" sortBy="#{car.name}">
+                                    <h:outputText value="#{car.name}" />
+                                </p:column>
+
+                                <p:column  headerText="Action" >
+                                    <h:commandLink value="Write"    action="#{dashboard.saveBarcode(car)}"  ></h:commandLink> |
+                                    <h:commandLink value="Download" action="#{viewSupport.downloadFile(car)}"  ></h:commandLink>
+                                </p:column>
+
+                            </p:dataTable>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+        </div>
+         
+    </ui:define>
+
+</ui:composition>
+
+
+
+

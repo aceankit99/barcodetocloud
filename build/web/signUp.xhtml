@@ -1,0 +1,98 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template-front.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+                 .layout-footer{
+                     position: relative;
+                     bottom: -62px;   
+            }
+            
+        </style>
+    </ui:define>
+
+    <ui:define name="title">Barcode To Cloud</ui:define>
+
+    <ui:define name="viewname">New User Sign Up</ui:define>
+
+    <ui:define name="content">
+        
+        <div style="min-height: calc(100vh - 235px);">
+            <h:form id="mainForm">
+
+                <div class="ui-g">
+
+                    <div class="ui-g-12">
+                        <div class="card card-w-title">
+                            <p:panel header="New User Sign Up">
+
+                                <p:messages>
+                                    <p:autoUpdate />
+                                </p:messages>  
+
+
+                                <p:panelGrid columns="4" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
+
+                                    <p:outputLabel for="username" value="Name" />
+                                    <p:inputText id="username"   style="width:250px" required="true" value="#{newUserProfile.userProfile.userName}" requiredMessage="Please Enter Name"  />
+
+                                    <p:outputLabel for="email" value="Email" />
+                                    <p:inputText id="email"   style="width:250px" required="true" value="#{newUserProfile.userProfile.email}" requiredMessage="Please Enter Email" validatorMessage="Please Enter Email in Right Format" >
+                                       <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+                                    </p:inputText>
+                                    
+                                    <p:outputLabel for="password"  value="Password"/>
+                                    <p:password id="password" value="#{newUserProfile.userProfile.password}" style="width:250px" required="true" requiredMessage="Please Enter Password" validatorMessage="Password length should be minimum 6 characters">
+                                        <f:validateLength minimum="6" />  
+                                    </p:password>
+
+                                    <p:outputLabel for="confirmpassword" value="Confirm Password"/>
+                                    <p:password  id="confirmpassword" value="#{newUserProfile.confirmPassword}"  style="width:250px" required="true" requiredMessage="Please Enter Confirm Password"  />
+
+                                    <p:outputLabel for="address" value="Address"/>
+                                    <p:inputText id="address" value="#{newUserProfile.userProfile.address}"   style="width:250px" required="true" requiredMessage="Please Enter Address"  />
+
+                                    <p:outputLabel for="phone" value="Phone Number"/>
+                                    <p:inputText id="phone" value="#{newUserProfile.userProfile.phone}"   style="width:250px" required="true" requiredMessage="Please Enter Phone Number" validatorMessage="Please Enter Phone Number in Right Format">
+                                        <f:validateRegex pattern="^[0-9]*$" />
+                                    </p:inputText>
+
+                                    <p:outputLabel for="Gender" value="Gender"/>
+                                    <p:selectOneMenu id="Gender" value="#{newUserProfile.userProfile.gender}" style="width:120px"  filterMatchMode="startsWith">
+                                        <f:selectItem itemLabel="Male" itemValue="male"    />
+                                        <f:selectItem itemLabel="Female" itemValue="female"    />
+                                    </p:selectOneMenu>
+                                    
+                                    <p:outputLabel for="plan" value="Plan:"/>
+                                    <p:selectOneMenu id="plan" value="#{newUserProfile.userProfile.plans}" style="width:120px" required="true" requiredMessage="Select Plan" converter="plansConverter">
+                                            
+                                        <f:selectItem itemLabel="Select Plan" itemValue="" />
+                                        <f:selectItems var="plan" value="#{newUserProfile.plansName}" itemLabel="#{plan.planName}"  itemValue="#{plan}"/>
+                                    </p:selectOneMenu>
+
+
+                                    <p:toolbar  style=" min-width: 225px;width: 30vw">
+                                       <f:facet name="left" >
+                                           <p:commandButton value="Back" action="#{newUserProfile.newUserCancel()}" immediate="true" ajax="false"   />
+                                       </f:facet>
+                                        <f:facet name="right">
+                                            <p:commandButton value="Save"  action="#{newUserProfile.newUserSave}" ajax="false"  />
+                                        </f:facet>
+                                    </p:toolbar>
+
+                                </p:panelGrid>
+                            </p:panel>
+
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>
+

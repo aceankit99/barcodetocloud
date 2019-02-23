@@ -1,0 +1,113 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+                 .layout-footer{
+                     position: relative;
+                     bottom: -30px;   
+            } 
+            
+        </style>
+    </ui:define>
+
+    <ui:define name="title">User Profile</ui:define>
+
+    <ui:define name="viewname">User Profile</ui:define>
+
+    <ui:define name="content">
+        <div style="min-height: calc(100vh - 235px);">
+                        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+
+            <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false" style="width:100px;background: none;box-shadow: none">
+                <p:graphicImage value="images/ankitload.gif" style="width:100px" />
+            </p:dialog>
+
+                <div class="ui-g">
+
+                    <div class="ui-g-12">
+                        <div class="card card-w-title">
+                            <h3 style="font-weight:500">User Profile</h3>
+                                <p:messages id="messages">
+                                    <p:autoUpdate />
+                                </p:messages>  
+                               
+                                <p:tabView cache="true">
+                                    <p:tab title="User Profile">
+                                        <h:form id="mainForm">
+                                           <p:panelGrid columns="2" columnClasses="ui-grid-col-2,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
+
+                                                <p:outputLabel for="username" value="User Name" />
+                                                <p:inputText id="username"   style="width:250px" required="true" value="#{userProfilePage.userProfile.userName}" requiredMessage="Please Enter Name"  />
+
+                                                <p:outputLabel for="address" value="Address"/>
+                                                <p:inputText id="address" value="#{userProfilePage.userProfile.address}"   style="width:250px" required="true" requiredMessage="Please Enter Address"  />
+
+                                                <p:outputLabel for="phone" value="Phone Number"/>
+                                                <p:inputText id="phone" value="#{userProfilePage.userProfile.phone}"   style="width:250px" required="true" requiredMessage="Please Enter Phone Number" validatorMessage="Please Enter Phone Number in Right Format">
+                                                    <f:validateRegex pattern="^[0-9]*$" />
+                                                </p:inputText>
+
+                                                <p:outputLabel for="Gender" value="Select Gender"/>
+                                                <p:selectOneMenu id="Gender" value="#{userProfilePage.userProfile.gender}"   style="width:230px" filterMatchMode="startsWith">
+                                                    <f:selectItem itemLabel="Male" itemValue="male"    />
+                                                    <f:selectItem itemLabel="Female" itemValue="female"    />
+                                                </p:selectOneMenu>
+
+
+                                                <p:toolbar  style="min-width: 225px;width: 30vw">
+                                                    <f:facet name="left">
+                                                        <p:commandButton value="Back" action="dashboard.xhtml" immediate="true" ajax="false"   />
+                                                    </f:facet>
+                                                    <f:facet name="right">
+                                                        <p:commandButton value="Save" action="#{userProfilePage.updateUserProfile(userProfilePage.userProfile)}" ajax="false"  />
+                                                    </f:facet>
+                                                </p:toolbar>
+                                            </p:panelGrid>
+                                        </h:form>
+                                    </p:tab>
+                                    
+                                    <p:tab title="Change Password">
+                                        <h:form id="mainFormChangePassword">
+                                            <p:panelGrid columns="2" columnClasses="ui-grid-col-2,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
+                                                <p:outputLabel for="oldpassword"  value="Old Password"/>
+                                                <p:password id="oldpassword" value="#{userProfilePage.newuserProfile.password}"  style="width:250px" required="true" requiredMessage="Please Enter Old Password">
+                                                    
+                                                </p:password>
+                                                
+                                                <p:outputLabel for="newpassword"  value="New Password"/>
+                                                <p:password id="newpassword" value="#{userProfilePage.newPassword}" style="width:250px" required="true" requiredMessage="Please Enter New Password" validatorMessage="Password Length Should Be minimum 6 Chracters">
+                                                    <f:validateLength minimum="6" />  
+                                                </p:password>
+
+
+
+
+                                                <p:toolbar  style="min-width: 225px;width: 30vw">
+                                                    <f:facet name="left">
+                                                        <p:commandButton value="Back" action="dashboard.xhtml" immediate="true"  ajax="false"   />
+                                                    </f:facet>
+                                                    <f:facet name="right">
+                                                        <p:commandButton value="Save"  action="#{userProfilePage.updateUserProfilePassword(userProfilePage.newuserProfile)}" ajax="true" update="messages mainFormChangePassword"  />
+                                                    </f:facet>
+                                                </p:toolbar>
+                                            </p:panelGrid>
+                                        </h:form>
+                                    </p:tab>
+                                    
+                                </p:tabView>
+                         
+
+                        </div>
+                    </div>
+                </div>
+            
+        </div>
+    </ui:define>
+
+</ui:composition>
+
